@@ -9,8 +9,8 @@ fn main() {
         .add_startup_system(setup.system())
         .add_startup_system(add_player.system())
         .add_startup_system(add_entity.system())
-        .add_system(movement_handler.system())
         .add_system(input_handler.system())
+        .add_system(movement_handler.system())
         .run();
 }
 
@@ -19,11 +19,13 @@ fn movement_handler(
     mut query: Query<(&mut Velocity, &mut Force, &mut Transform)>,
 ) {
     for (mut velocity, mut force, mut transform) in query.iter_mut() {
-        velocity.0 += force.0;
+        if force.0.length() != 0.0 {
+            velocity.0 += force.0;
+
+            force.0 = Vec3::zero();
+        }
 
         transform.translation += velocity.0 * time.delta_seconds();
-
-        force.0 = Vec3::default();
     }
 }
 
@@ -74,11 +76,7 @@ fn add_player(commands: &mut Commands, mut materials: ResMut<Assets<ColorMateria
 fn add_entity(commands: &mut Commands, mut materials: ResMut<Assets<ColorMaterial>>) {
     let pos = Vec3::new(-150.0, -30.0, 1.0);
     commands
-        .spawn((
-            GameEntity,
-            Force(Vec3::default()),
-            Velocity(Vec3::default()),
-        ))
+        .spawn((GameEntity, Force(Vec3::zero()), Velocity(Vec3::zero())))
         .with_bundle(SpriteBundle {
             material: materials.add(Color::rgb(0.2, 0.2, 0.2).into()),
             transform: Transform::from_translation(pos),
