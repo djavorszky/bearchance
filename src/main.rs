@@ -1,3 +1,6 @@
+mod components;
+
+use crate::components::*;
 use bevy::prelude::*;
 
 fn main() {
@@ -10,15 +13,6 @@ fn main() {
         .add_system(input_handler.system())
         .run();
 }
-
-#[derive(Debug)]
-struct Player;
-
-#[derive(Debug)]
-struct Velocity(Vec3);
-
-#[derive(Debug)]
-struct Force(Vec3);
 
 fn movement_handler(
     time: Res<Time>,
@@ -77,12 +71,14 @@ fn add_player(commands: &mut Commands, mut materials: ResMut<Assets<ColorMateria
         });
 }
 
-struct Entity;
-
 fn add_entity(commands: &mut Commands, mut materials: ResMut<Assets<ColorMaterial>>) {
     let pos = Vec3::new(-150.0, -30.0, 1.0);
     commands
-        .spawn((Entity, Force(Vec3::default()), Velocity(Vec3::default())))
+        .spawn((
+            GameEntity,
+            Force(Vec3::default()),
+            Velocity(Vec3::default()),
+        ))
         .with_bundle(SpriteBundle {
             material: materials.add(Color::rgb(0.2, 0.2, 0.2).into()),
             transform: Transform::from_translation(pos),
