@@ -4,6 +4,15 @@ version = "0.1.0"
 authors = ["Daniel Javorszky <daniel.javorszky@gmail.com>"]
 edition = "2018"
 
+# From https://bevy-cheatbook.github.io/pitfalls/performance.html
+# Enable optimizations for dependencies (incl. Bevy), but not for our code:
+[profile.dev.package."*"]
+opt-level = 3
+
+# Maybe also enable only a small amount of optimization for our code:
+[profile.dev]
+opt-level = 1
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
