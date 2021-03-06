@@ -8,6 +8,12 @@ use bevy::prelude::*;
 
 fn main() {
     App::build()
+        .add_resource(WindowDescriptor {
+            title: "Chance of bears".to_string(),
+            width: 640.,
+            height: 480.,
+            ..Default::default()
+        })
         .add_plugins(DefaultPlugins)
         .add_plugin(debug::DebugPlugin)
         .init_resource::<config::GameOpts>()
