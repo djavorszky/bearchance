@@ -5,11 +5,11 @@ use serde_json;
 use std::fs;
 
 #[derive(Debug, Deserialize)]
-pub struct GameConfig {
-    pub default_max_speed: f32,
+pub struct GameOpts {
+    pub player_speed: f32,
 }
 
-impl FromResources for GameConfig {
+impl FromResources for GameOpts {
     fn from_resources(_resources: &bevy::ecs::Resources) -> Self {
         let config = fs::read_to_string("config.json").expect("Failed reading config file");
 

@@ -1,4 +1,4 @@
-use crate::components::*;
+use crate::{components::*, config::GameOpts};
 
 use bevy::prelude::*;
 
@@ -19,24 +19,32 @@ pub fn movement_handler(
 
 pub fn input_handler(
     keyboard_input: Res<Input<KeyCode>>,
+    opts: Res<GameOpts>,
     mut query: Query<&mut Force, With<Player>>,
 ) {
+    let input_force = opts.player_speed;
+
     for mut force in query.iter_mut() {
-        let mut new_force = Vec3::default();
-        if keyboard_input.pressed(KeyCode::Left) {
-            new_force.x -= 30.0;
+        let mut new_force = Vec3::zero();
+
+        for btn in keyboard_input.get_just_pressed() {
+            match btn {
+                KeyCode::A => new_force.x -= input_force,
+                KeyCode::D => new_force.x += input_force,
+                KeyCode::W => new_force.y += input_force,
+                KeyCode::S => new_force.y -= input_force,
+                _ => (),
+            }
         }
 
-        if keyboard_input.pressed(KeyCode::Up) {
-            new_force.y += 30.0;
-        }
-
-        if keyboard_input.pressed(KeyCode::Right) {
-            new_force.x += 30.0;
-        }
-
-        if keyboard_input.pressed(KeyCode::Down) {
-            new_force.y -= 30.0;
+        for btn in keyboard_input.get_just_released() {
+            match btn {
+                KeyCode::A => new_force.x += input_force,
+                KeyCode::D => new_force.x -= input_force,
+                KeyCode::W => new_force.y -= input_force,
+                KeyCode::S => new_force.y += input_force,
+                _ => (),
+            }
         }
 
         force.0 += new_force;
