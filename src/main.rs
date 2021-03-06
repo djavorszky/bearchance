@@ -1,10 +1,11 @@
+use bevy::prelude::*;
+
+use crate::systems::*;
+
 mod components;
 mod config;
 mod debug;
 mod systems;
-
-use crate::systems::*;
-use bevy::prelude::*;
 
 fn main() {
     App::build()
