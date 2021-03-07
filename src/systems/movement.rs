@@ -1,6 +1,6 @@
-use crate::{components::*, config::GameOpts};
-
 use bevy::prelude::*;
+
+use crate::{components::*, config::GameOpts};
 
 pub fn movement_handler(
     time: Res<Time>,
@@ -22,7 +22,7 @@ pub fn input_handler(
     opts: Res<GameOpts>,
     mut query: Query<&mut Force, With<Player>>,
 ) {
-    let input_force = opts.player_speed;
+    let input_force = opts.player.speed;
 
     for mut force in query.iter_mut() {
         let mut new_force = Vec3::zero();

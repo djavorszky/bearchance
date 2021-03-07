@@ -1,0 +1,6 @@
+player:
+  speed: 300.0
+
+debug:
+  log_fps: true
+  log_options_at_startup: true
